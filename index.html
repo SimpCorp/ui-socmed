@@ -3,127 +3,555 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UI Architecture Analysis: Instagram vs. Reddit</title>
+  <title>Platform UI Architecture Showcase</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    body {
-      background-color: #0e1113;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
+    /* Custom scrollbars for native platform feel */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="text-zinc-100 min-h-screen p-4 md:p-8 flex flex-col items-center">
+<body class="bg-zinc-950 text-zinc-100 h-screen w-screen overflow-hidden flex flex-col font-sans select-none">
 
-  <div class="w-full max-w-6xl mb-6 text-center">
-    <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500 bg-zinc-900 border border-zinc-800 px-3 py-1 rounded-full">Educational Sandbox</span>
-    <h1 class="text-xl font-bold text-zinc-200 mt-2">Design Philosophy & Visual Hierarchy Breakdown</h1>
-  </div>
+  <header class="h-14 bg-zinc-900 border-b border-zinc-800 px-6 flex items-center justify-between z-50 shrink-0">
+    <div class="flex items-center gap-3">
+      <span class="text-xs font-bold uppercase tracking-wider text-zinc-400 bg-zinc-800 px-2.5 py-1 rounded border border-zinc-700">UI Teardown</span>
+      <span class="text-sm font-medium text-zinc-300 hidden sm:inline">Select Architecture:</span>
+    </div>
+    
+    <div class="flex items-center gap-2">
+      <button onclick="switchTab('instagram')" id="btn-instagram" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-full transition-all bg-white text-black shadow-sm">
+        Instagram
+      </button>
+      <button onclick="switchTab('youtube')" id="btn-youtube" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-full transition-all text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800">
+        YouTube
+      </button>
+      <button onclick="switchTab('discord')" id="btn-discord" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-full transition-all text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800">
+        Discord
+      </button>
+      <button onclick="switchTab('reddit')" id="btn-reddit" class="tab-btn px-4 py-1.5 text-xs font-semibold rounded-full transition-all text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800">
+        Reddit
+      </button>
+    </div>
+  </header>
 
-  <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+  <main class="flex-1 relative overflow-hidden bg-black">
 
-    <div class="flex flex-col items-center">
-      <div class="w-full max-w-[470px] bg-black border border-zinc-800 rounded-lg overflow-hidden text-sm">
-        
-        <div class="flex items-center justify-between px-3.5 py-3">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-fuchsia-600 p-[2px]">
-              <div class="w-full h-full bg-black rounded-full p-[1.5px]">
-                <img src="https://picsum.photos/seed/design_user/100/100" alt="avatar" class="w-full h-full rounded-full object-cover">
+    <div id="view-instagram" class="platform-view w-full h-full flex bg-black text-white">
+      <aside class="w-18 xl:w-60 border-r border-zinc-800 flex flex-col justify-between p-3.5 shrink-0">
+        <div class="space-y-6">
+          <div class="py-4 px-2 tracking-tight">
+            <span class="hidden xl:inline text-xl font-bold italic font-serif">Instagram</span>
+            <i data-lucide="instagram" class="xl:hidden w-6 h-6"></i>
+          </div>
+          <nav class="space-y-1">
+            <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-900 font-bold">
+              <i data-lucide="home" class="w-6 h-6"></i><span class="hidden xl:inline text-sm">Home</span>
+            </a>
+            <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-900">
+              <i data-lucide="search" class="w-6 h-6"></i><span class="hidden xl:inline text-sm">Search</span>
+            </a>
+            <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-900">
+              <i data-lucide="compass" class="w-6 h-6"></i><span class="hidden xl:inline text-sm">Explore</span>
+            </a>
+            <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-900">
+              <i data-lucide="film" class="w-6 h-6"></i><span class="hidden xl:inline text-sm">Reels</span>
+            </a>
+            <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-900">
+              <i data-lucide="send" class="w-6 h-6"></i><span class="hidden xl:inline text-sm">Messages</span>
+            </a>
+            <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-900">
+              <i data-lucide="heart" class="w-6 h-6"></i><span class="hidden xl:inline text-sm">Notifications</span>
+            </a>
+            <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-900">
+              <i data-lucide="plus-square" class="w-6 h-6"></i><span class="hidden xl:inline text-sm">Create</span>
+            </a>
+            <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-900">
+              <img src="https://picsum.photos/seed/igme/60/60" class="w-6 h-6 rounded-full object-cover">
+              <span class="hidden xl:inline text-sm">Profile</span>
+            </a>
+          </nav>
+        </div>
+        <div class="space-y-1">
+          <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-zinc-900">
+            <i data-lucide="menu" class="w-6 h-6"></i><span class="hidden xl:inline text-sm">More</span>
+          </a>
+        </div>
+      </aside>
+
+      <section class="flex-1 overflow-y-auto flex justify-center p-4">
+        <div class="w-full max-w-[630px] space-y-4">
+          
+          <div class="flex items-center gap-4 overflow-x-auto py-2 border-b border-zinc-900 no-scrollbar">
+            <div class="flex flex-col items-center gap-1 shrink-0 cursor-pointer">
+              <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-amber-500 via-rose-500 to-fuchsia-600">
+                <img src="https://picsum.photos/seed/story1/100/100" class="w-full h-full rounded-full border-2 border-black object-cover">
+              </div>
+              <span class="text-[11px] text-zinc-400 truncate w-16 text-center">alex_ui</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 shrink-0 cursor-pointer">
+              <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-amber-500 via-rose-500 to-fuchsia-600">
+                <img src="https://picsum.photos/seed/story2/100/100" class="w-full h-full rounded-full border-2 border-black object-cover">
+              </div>
+              <span class="text-[11px] text-zinc-400 truncate w-16 text-center">sarah_codes</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 shrink-0 cursor-pointer">
+              <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-amber-500 via-rose-500 to-fuchsia-600">
+                <img src="https://picsum.photos/seed/story3/100/100" class="w-full h-full rounded-full border-2 border-black object-cover">
+              </div>
+              <span class="text-[11px] text-zinc-400 truncate w-16 text-center">ux_vault</span>
+            </div>
+          </div>
+
+          <article class="bg-black border border-zinc-800 rounded-lg overflow-hidden">
+            <div class="flex items-center justify-between p-3">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full p-[1.5px] bg-gradient-to-tr from-amber-500 to-fuchsia-600">
+                  <img src="https://picsum.photos/seed/story2/100/100" class="w-full h-full rounded-full border border-black object-cover">
+                </div>
+                <div class="leading-tight">
+                  <span class="text-xs font-semibold">sarah_codes</span>
+                  <span class="text-zinc-500 text-xs">• 3h</span>
+                </div>
+              </div>
+              <i data-lucide="more-horizontal" class="w-5 h-5 text-zinc-400"></i>
+            </div>
+            
+            <div class="aspect-square bg-zinc-900 overflow-hidden flex items-center justify-center">
+              <img src="https://picsum.photos/seed/postdesign/900/900" class="w-full h-full object-cover">
+            </div>
+
+            <div class="p-3">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-4">
+                  <i data-lucide="heart" class="w-6 h-6 hover:text-red-500 cursor-pointer stroke-[1.75]"></i>
+                  <i data-lucide="message-circle" class="w-6 h-6 -rotate-90 cursor-pointer stroke-[1.75]"></i>
+                  <i data-lucide="send" class="w-6 h-6 cursor-pointer stroke-[1.75]"></i>
+                </div>
+                <i data-lucide="bookmark" class="w-6 h-6 cursor-pointer stroke-[1.75]"></i>
+              </div>
+              <p class="text-xs font-semibold mb-1">1,940 likes</p>
+              <p class="text-xs leading-relaxed">
+                <span class="font-semibold mr-1">sarah_codes</span>Exploring pure spatial balancing and minimal feed architectures.
+              </p>
+              <p class="text-xs text-zinc-500 mt-1 cursor-pointer">View all 42 comments</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="w-80 hidden 2xl:block p-6 border-l border-zinc-900 space-y-4 text-xs">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <img src="https://picsum.photos/seed/igme/80/80" class="w-11 h-11 rounded-full object-cover">
+            <div>
+              <p class="font-semibold">current_viewer</p>
+              <p class="text-zinc-500">Student Account</p>
+            </div>
+          </div>
+          <span class="text-blue-500 font-semibold cursor-pointer">Switch</span>
+        </div>
+        <div class="flex justify-between text-zinc-400 font-semibold pt-4">
+          <span>Suggested for you</span>
+          <span class="text-white cursor-pointer hover:underline">See All</span>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <img src="https://picsum.photos/seed/u1/60/60" class="w-8 h-8 rounded-full object-cover">
+              <div><p class="font-semibold">typography_nerd</p><p class="text-zinc-500 text-[10px]">Follows you</p></div>
+            </div>
+            <span class="text-blue-500 font-semibold cursor-pointer">Follow</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div id="view-youtube" class="platform-view hidden w-full h-full flex flex-col bg-[#0f0f0f] text-white">
+      <header class="h-14 px-4 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-4">
+          <i data-lucide="menu" class="w-5 h-5 cursor-pointer"></i>
+          <div class="flex items-center gap-1 text-red-600 font-bold tracking-tighter text-lg cursor-pointer">
+            <div class="w-7 h-5 bg-red-600 rounded-lg flex items-center justify-center text-white">
+              <div class="w-0 h-0 border-y-[4px] border-y-transparent border-l-[7px] border-l-white ml-0.5"></div>
+            </div>
+            <span class="text-white tracking-normal text-base font-semibold">YouTube</span>
+          </div>
+        </div>
+
+        <div class="flex items-center w-full max-w-xl mx-4">
+          <div class="flex flex-1 items-center bg-[#121212] border border-[#303030] rounded-l-full px-4 py-1.5 focus-within:border-blue-500">
+            <input type="text" placeholder="Search" class="bg-transparent w-full text-sm outline-none">
+          </div>
+          <button class="bg-[#222222] border border-l-0 border-[#303030] rounded-r-full px-5 py-1.5 hover:bg-[#272727]">
+            <i data-lucide="search" class="w-4 h-4 text-zinc-300"></i>
+          </button>
+          <button class="ml-3 bg-[#222222] p-2 rounded-full hover:bg-[#272727]">
+            <i data-lucide="mic" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button class="flex items-center gap-2 bg-[#222222] hover:bg-[#272727] px-3 py-1.5 rounded-full text-xs font-semibold">
+            <i data-lucide="plus" class="w-4 h-4"></i> Create
+          </button>
+          <i data-lucide="bell" class="w-5 h-5 cursor-pointer"></i>
+          <img src="https://picsum.photos/seed/ytme/60/60" class="w-7 h-7 rounded-full object-cover">
+        </div>
+      </header>
+
+      <div class="flex-1 flex overflow-hidden">
+        <aside class="w-56 overflow-y-auto px-3 space-y-4 shrink-0 text-sm hidden md:block">
+          <div class="space-y-1">
+            <a href="#" class="flex items-center gap-5 px-3 py-2 rounded-lg bg-[#272727] font-medium"><i data-lucide="home" class="w-5 h-5"></i>Home</a>
+            <a href="#" class="flex items-center gap-5 px-3 py-2 rounded-lg hover:bg-[#222222]"><i data-lucide="zap" class="w-5 h-5"></i>Shorts</a>
+            <a href="#" class="flex items-center gap-5 px-3 py-2 rounded-lg hover:bg-[#222222]"><i data-lucide="play-square" class="w-5 h-5"></i>Subscriptions</a>
+          </div>
+          <hr class="border-zinc-800">
+          <div class="space-y-1">
+            <div class="px-3 py-1 text-xs font-semibold uppercase text-zinc-400">You</div>
+            <a href="#" class="flex items-center gap-5 px-3 py-2 rounded-lg hover:bg-[#222222]"><i data-lucide="history" class="w-5 h-5"></i>History</a>
+            <a href="#" class="flex items-center gap-5 px-3 py-2 rounded-lg hover:bg-[#222222]"><i data-lucide="clock" class="w-5 h-5"></i>Watch Later</a>
+            <a href="#" class="flex items-center gap-5 px-3 py-2 rounded-lg hover:bg-[#222222]"><i data-lucide="thumbs-up" class="w-5 h-5"></i>Liked Videos</a>
+          </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto p-6 space-y-6">
+          <div class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar text-xs">
+            <span class="bg-white text-black px-3 py-1.5 rounded-lg font-semibold cursor-pointer">All</span>
+            <span class="bg-[#272727] hover:bg-[#3f3f3f] px-3 py-1.5 rounded-lg font-semibold cursor-pointer">User Interface</span>
+            <span class="bg-[#272727] hover:bg-[#3f3f3f] px-3 py-1.5 rounded-lg font-semibold cursor-pointer">Web Development</span>
+            <span class="bg-[#272727] hover:bg-[#3f3f3f] px-3 py-1.5 rounded-lg font-semibold cursor-pointer">System Architecture</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-4">
+            
+            <div class="space-y-3 cursor-pointer">
+              <div class="aspect-video bg-zinc-800 rounded-xl overflow-relative relative">
+                <img src="https://picsum.photos/seed/ytvid1/640/360" class="w-full h-full object-cover rounded-xl">
+                <span class="absolute bottom-2 right-2 bg-black/80 text-[11px] px-1.5 py-0.5 rounded font-medium">18:42</span>
+              </div>
+              <div class="flex gap-3">
+                <img src="https://picsum.photos/seed/u4/60/60" class="w-9 h-9 rounded-full object-cover shrink-0">
+                <div class="text-xs space-y-1">
+                  <h3 class="text-sm font-semibold leading-snug line-clamp-2">Principles of Information Density in Modern Web Frameworks</h3>
+                  <p class="text-zinc-400">DevTech Insights</p>
+                  <p class="text-zinc-400">120K views • 2 weeks ago</p>
+                </div>
               </div>
             </div>
-            <div class="flex items-center gap-1.5">
-              <span class="font-semibold text-xs text-white">design_philosophy</span>
-              <span class="text-zinc-500 text-xs">•</span>
-              <span class="text-zinc-400 text-xs">2h</span>
+
+            <div class="space-y-3 cursor-pointer">
+              <div class="aspect-video bg-zinc-800 rounded-xl overflow-relative relative">
+                <img src="https://picsum.photos/seed/ytvid2/640/360" class="w-full h-full object-cover rounded-xl">
+                <span class="absolute bottom-2 right-2 bg-black/80 text-[11px] px-1.5 py-0.5 rounded font-medium">10:15</span>
+              </div>
+              <div class="flex gap-3">
+                <img src="https://picsum.photos/seed/u5/60/60" class="w-9 h-9 rounded-full object-cover shrink-0">
+                <div class="text-xs space-y-1">
+                  <h3 class="text-sm font-semibold leading-snug line-clamp-2">How Tailwind and CSS Grid Standardized Social Media Layouts</h3>
+                  <p class="text-zinc-400">UI Masters</p>
+                  <p class="text-zinc-400">45K views • 3 days ago</p>
+                </div>
+              </div>
             </div>
-          </div>
-          <i data-feather="more-horizontal" class="w-4 h-4 text-zinc-400 cursor-pointer"></i>
-        </div>
 
-        <div class="w-full aspect-square bg-zinc-900 overflow-hidden relative flex items-center justify-center">
-          <img src="https://picsum.photos/seed/minimal_arch/800/800" alt="Post content" class="w-full h-full object-cover">
-        </div>
-
-        <div class="px-3.5 pt-3 pb-2">
-          <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center gap-4 text-white">
-              <i data-feather="heart" class="w-6 h-6 stroke-[1.75] cursor-pointer hover:opacity-70"></i>
-              <i data-feather="message-circle" class="w-6 h-6 stroke-[1.75] -rotate-90 cursor-pointer hover:opacity-70"></i>
-              <i data-feather="send" class="w-6 h-6 stroke-[1.75] cursor-pointer hover:opacity-70"></i>
+            <div class="space-y-3 cursor-pointer">
+              <div class="aspect-video bg-zinc-800 rounded-xl overflow-relative relative">
+                <img src="https://picsum.photos/seed/ytvid3/640/360" class="w-full h-full object-cover rounded-xl">
+                <span class="absolute bottom-2 right-2 bg-black/80 text-[11px] px-1.5 py-0.5 rounded font-medium">24:01</span>
+              </div>
+              <div class="flex gap-3">
+                <img src="https://picsum.photos/seed/u6/60/60" class="w-9 h-9 rounded-full object-cover shrink-0">
+                <div class="text-xs space-y-1">
+                  <h3 class="text-sm font-semibold leading-snug line-clamp-2">Building Clean Real-Time WebSocket Dashboards From Scratch</h3>
+                  <p class="text-zinc-400">Frontend Engineering Hub</p>
+                  <p class="text-zinc-400">890K views • 1 year ago</p>
+                </div>
+              </div>
             </div>
-            <i data-feather="bookmark" class="w-6 h-6 text-white stroke-[1.75] cursor-pointer hover:opacity-70"></i>
+
           </div>
-
-          <div class="font-semibold text-xs text-white mb-1.5">14,289 likes</div>
-
-          <div class="space-y-1 text-xs leading-relaxed">
-            <p>
-              <span class="font-semibold text-white mr-1.5">design_philosophy</span>
-              Minimalist visual balance focuses entirely on imagery first, deferring text hierarchy to lower vertical priority.
-            </p>
-            <p class="text-zinc-500 cursor-pointer">View all 184 comments</p>
-          </div>
-
-          <div class="text-[10px] text-zinc-500 uppercase tracking-tight mt-2 font-medium">2 HOURS AGO</div>
-        </div>
-
-        <div class="border-t border-zinc-850 px-3.5 py-3 hidden md:flex items-center justify-between text-xs text-zinc-500">
-          <span>Add a comment...</span>
-          <span class="text-blue-500 font-semibold opacity-50 cursor-pointer">Post</span>
-        </div>
+        </main>
       </div>
-      <p class="mt-2 text-xs text-zinc-500">Instagram: Image-dominant, brand-centric, minimal text density</p>
     </div>
 
-    <div class="flex flex-col items-center">
-      <div class="w-full max-w-[540px] bg-[#1a1a1b] border border-[#343536] hover:border-zinc-500 rounded-md p-3 text-sm transition-colors">
-        
-        <div class="flex items-center gap-1.5 text-xs text-zinc-400 mb-2">
-          <div class="w-5 h-5 rounded-full bg-orange-600 flex items-center justify-center font-bold text-[10px] text-white">
+    <div id="view-discord" class="platform-view hidden w-full h-full flex bg-[#313338] text-zinc-200">
+      <aside class="w-[72px] bg-[#1e1f22] flex flex-col items-center py-3 gap-2 shrink-0">
+        <div class="w-12 h-12 bg-[#5865F2] hover:rounded-2xl rounded-3xl flex items-center justify-center text-white transition-all cursor-pointer">
+          <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+        </div>
+        <div class="w-8 h-[2px] bg-[#35363c] rounded"></div>
+        <div class="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center font-bold text-white cursor-pointer hover:rounded-2xl transition-all">
+          TS
+        </div>
+        <div class="w-12 h-12 bg-[#2b2d31] hover:bg-[#5865F2] rounded-3xl hover:rounded-2xl flex items-center justify-center text-zinc-400 hover:text-white transition-all cursor-pointer">
+          <i data-lucide="compass" class="w-6 h-6"></i>
+        </div>
+        <div class="w-12 h-12 bg-[#2b2d31] hover:bg-emerald-600 rounded-3xl hover:rounded-2xl flex items-center justify-center text-emerald-500 hover:text-white transition-all cursor-pointer">
+          <i data-lucide="plus" class="w-6 h-6"></i>
+        </div>
+      </aside>
+
+      <aside class="w-60 bg-[#2b2d31] flex flex-col justify-between shrink-0">
+        <div>
+          <div class="h-12 border-b border-[#1f2023] px-4 flex items-center justify-between font-bold text-sm text-white shadow-sm">
+            <span>Engineering Hub</span>
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+          </div>
+          <div class="p-2 space-y-4">
+            <div>
+              <div class="flex items-center gap-1 text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-2 mb-1">
+                <i data-lucide="chevron-down" class="w-3 h-3"></i> Text Channels
+              </div>
+              <div class="space-y-0.5">
+                <div class="flex items-center gap-2 px-2 py-1.5 rounded text-sm text-white bg-[#35373c] cursor-pointer">
+                  <i data-lucide="hash" class="w-4 h-4 text-zinc-400"></i> general
+                </div>
+                <div class="flex items-center gap-2 px-2 py-1.5 rounded text-sm text-zinc-400 hover:bg-[#35373c]/50 hover:text-zinc-200 cursor-pointer">
+                  <i data-lucide="hash" class="w-4 h-4 text-zinc-400"></i> announcements
+                </div>
+                <div class="flex items-center gap-2 px-2 py-1.5 rounded text-sm text-zinc-400 hover:bg-[#35373c]/50 hover:text-zinc-200 cursor-pointer">
+                  <i data-lucide="hash" class="w-4 h-4 text-zinc-400"></i> ui-ux-critique
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center gap-1 text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-2 mb-1">
+                <i data-lucide="chevron-down" class="w-3 h-3"></i> Voice Channels
+              </div>
+              <div class="space-y-0.5">
+                <div class="flex items-center gap-2 px-2 py-1.5 rounded text-sm text-zinc-400 hover:bg-[#35373c]/50 hover:text-zinc-200 cursor-pointer">
+                  <i data-lucide="volume-2" class="w-4 h-4 text-zinc-400"></i> Lounge
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-14 bg-[#232428] px-2 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="relative">
+              <img src="https://picsum.photos/seed/discordme/60/60" class="w-8 h-8 rounded-full object-cover">
+              <div class="w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#232428] absolute bottom-0 right-0"></div>
+            </div>
+            <div class="text-xs">
+              <p class="font-bold text-white leading-tight">PixelArch</p>
+              <p class="text-zinc-400 text-[10px]">#0001</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 text-zinc-400">
+            <i data-lucide="mic" class="w-4 h-4 hover:text-white cursor-pointer"></i>
+            <i data-lucide="headphones" class="w-4 h-4 hover:text-white cursor-pointer"></i>
+            <i data-lucide="settings" class="w-4 h-4 hover:text-white cursor-pointer"></i>
+          </div>
+        </div>
+      </aside>
+
+      <section class="flex-1 flex flex-col bg-[#313338] overflow-hidden">
+        <div class="h-12 border-b border-[#232428] px-4 flex items-center justify-between shrink-0">
+          <div class="flex items-center gap-2 font-semibold text-sm">
+            <i data-lucide="hash" class="w-5 h-5 text-zinc-400"></i>
+            <span class="text-white">general</span>
+            <span class="text-xs text-zinc-400 font-normal border-l border-zinc-700 pl-3 ml-1">General discussion channel</span>
+          </div>
+          <div class="flex items-center gap-3 text-zinc-400">
+            <i data-lucide="bell" class="w-5 h-5 cursor-pointer"></i>
+            <i data-lucide="pin" class="w-5 h-5 cursor-pointer"></i>
+            <i data-lucide="users" class="w-5 h-5 cursor-pointer"></i>
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+          <div class="flex gap-4">
+            <img src="https://picsum.photos/seed/disc1/80/80" class="w-10 h-10 rounded-full mt-0.5">
+            <div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-sm font-semibold text-white">Synthetix</span>
+                <span class="text-[10px] text-zinc-400">Today at 2:15 PM</span>
+              </div>
+              <p class="text-sm text-zinc-300 mt-1">
+                Notice the contrast here: Discord minimizes media consumption and prioritizes real-time chat chronologies, grouping messages under explicit workspace channel taxonomies.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <img src="https://picsum.photos/seed/disc2/80/80" class="w-10 h-10 rounded-full mt-0.5">
+            <div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-sm font-semibold text-emerald-400">ArchMod</span>
+                <span class="text-[10px] text-zinc-400">Today at 2:18 PM</span>
+              </div>
+              <p class="text-sm text-zinc-300 mt-1">
+                Exactly. It's essentially IRC rebuilt on top of modern reactive UI elements and high-density interaction cards.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 pt-0">
+          <div class="bg-[#383a40] rounded-lg px-4 py-2.5 flex items-center gap-3 text-zinc-400">
+            <i data-lucide="plus-circle" class="w-5 h-5 hover:text-white cursor-pointer"></i>
+            <input type="text" placeholder="Message #general" class="bg-transparent flex-1 text-sm outline-none text-zinc-200">
+            <i data-lucide="smile" class="w-5 h-5 hover:text-white cursor-pointer"></i>
+          </div>
+        </div>
+      </section>
+
+      <aside class="w-56 bg-[#2b2d31] p-3 hidden lg:block overflow-y-auto text-xs space-y-4 shrink-0">
+        <div>
+          <span class="text-zinc-400 font-bold tracking-wider text-[11px] uppercase">Online — 2</span>
+          <div class="mt-2 space-y-2">
+            <div class="flex items-center gap-2 p-1 rounded hover:bg-[#35373c] cursor-pointer">
+              <img src="https://picsum.photos/seed/disc2/80/80" class="w-7 h-7 rounded-full">
+              <span class="font-medium text-emerald-400">ArchMod</span>
+            </div>
+            <div class="flex items-center gap-2 p-1 rounded hover:bg-[#35373c] cursor-pointer">
+              <img src="https://picsum.photos/seed/disc1/80/80" class="w-7 h-7 rounded-full">
+              <span class="font-medium text-zinc-200">Synthetix</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div id="view-reddit" class="platform-view hidden w-full h-full flex flex-col bg-[#0e1113] text-zinc-200">
+      <header class="h-12 border-b border-[#22272b] px-4 flex items-center justify-between shrink-0 bg-[#0e1113]">
+        <div class="flex items-center gap-2 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-[#ff4500] flex items-center justify-center text-white font-black text-xs">
             r/
           </div>
-          <span class="font-bold text-zinc-200 hover:underline cursor-pointer">r/webdesign</span>
-          <span>•</span>
-          <span>Posted by u/curator_99</span>
-          <span>5 hours ago</span>
+          <span class="text-lg font-bold tracking-tight text-white hidden sm:inline">reddit</span>
         </div>
 
-        <h2 class="text-base font-semibold text-zinc-100 mb-2.5 leading-snug">
-          Why Reddit prioritizes text context, voting mechanics, and source attribution over aesthetics
-        </h2>
-
-        <div class="w-full rounded-md border border-[#343536] bg-black overflow-hidden mb-2.5">
-          <img src="https://picsum.photos/seed/code_preview/800/450" alt="Reddit attachment" class="w-full max-h-[340px] object-cover">
+        <div class="flex-1 max-w-xl mx-4">
+          <div class="bg-[#1a1a1b] border border-[#343536] hover:border-zinc-500 rounded-full px-4 py-1.5 flex items-center gap-2">
+            <i data-lucide="search" class="w-4 h-4 text-zinc-400"></i>
+            <input type="text" placeholder="Find communities, posts, and topics..." class="bg-transparent text-xs outline-none w-full text-zinc-100">
+          </div>
         </div>
 
-        <div class="flex items-center gap-2 text-xs font-semibold text-zinc-400">
+        <div class="flex items-center gap-3">
+          <button class="bg-[#24292e] text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-zinc-800 flex items-center gap-1.5">
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i> Get App
+          </button>
+          <button class="bg-[#ff4500] text-black text-xs font-bold px-3.5 py-1.5 rounded-full hover:bg-[#e03d00]">
+            Log In
+          </button>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto flex justify-center p-4">
+        <main class="w-full max-w-[640px] space-y-3">
           
-          <div class="flex items-center bg-[#272729] hover:bg-[#343536] rounded-full px-2 py-1 gap-1.5">
-            <i data-feather="arrow-up" class="w-4 h-4 hover:text-orange-500 cursor-pointer stroke-[2.5]"></i>
-            <span class="text-xs text-zinc-200 font-medium">1.4k</span>
-            <i data-feather="arrow-down" class="w-4 h-4 hover:text-indigo-500 cursor-pointer stroke-[2.5]"></i>
+          <div class="bg-[#121619] border border-[#22272b] rounded-md p-2.5 flex items-center gap-2 text-xs font-bold text-zinc-400">
+            <span class="flex items-center gap-1.5 bg-[#22272b] text-white px-3 py-1.5 rounded-full cursor-pointer">
+              <i data-lucide="flame" class="w-4 h-4 text-[#ff4500]"></i> Hot
+            </span>
+            <span class="flex items-center gap-1.5 hover:bg-[#22272b] px-3 py-1.5 rounded-full cursor-pointer">
+              <i data-lucide="sparkles" class="w-4 h-4"></i> New
+            </span>
+            <span class="flex items-center gap-1.5 hover:bg-[#22272b] px-3 py-1.5 rounded-full cursor-pointer">
+              <i data-lucide="trending-up" class="w-4 h-4"></i> Top
+            </span>
           </div>
 
-          <div class="flex items-center gap-1.5 bg-[#272729] hover:bg-[#343536] rounded-full px-3 py-1.5 cursor-pointer">
-            <i data-feather="message-square" class="w-4 h-4 stroke-[2]"></i>
-            <span>342 Comments</span>
-          </div>
+          <article class="bg-[#121619] border border-[#22272b] hover:border-zinc-600 rounded-md p-3.5 transition-colors cursor-pointer">
+            <div class="flex items-center gap-2 text-xs text-zinc-400 mb-2">
+              <div class="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center font-bold text-[9px] text-white">r/</div>
+              <span class="font-bold text-zinc-200 hover:underline">r/DesignThought</span>
+              <span>•</span>
+              <span>Posted by u/curator_system</span>
+              <span>4 hours ago</span>
+            </div>
 
-          <div class="flex items-center gap-1.5 bg-[#272729] hover:bg-[#343536] rounded-full px-3 py-1.5 cursor-pointer">
-            <i data-feather="share-2" class="w-4 h-4 stroke-[2]"></i>
-            <span>Share</span>
-          </div>
+            <h2 class="text-base font-semibold text-zinc-100 mb-2 leading-snug">
+              Why Reddit treats UI as a structured content ledger rather than an immersive canvas
+            </h2>
 
-        </div>
+            <p class="text-xs text-zinc-300 mb-3 leading-relaxed">
+              Unlike photo-first platforms, Reddit decouples visual hierarchy from author identity, assigning top tier visual prominence to headline clarity, community taxonomy, and user-moderated scoring arrays.
+            </p>
+
+            <div class="w-full max-h-72 rounded border border-[#22272b] bg-black overflow-hidden mb-3">
+              <img src="https://picsum.photos/seed/infotree/800/400" class="w-full h-full object-cover">
+            </div>
+
+            <div class="flex items-center gap-2 text-xs font-semibold text-zinc-400">
+              <div class="flex items-center bg-[#1d2226] hover:bg-[#282f35] rounded-full px-2 py-1 gap-2">
+                <i data-lucide="arrow-big-up" class="w-4 h-4 hover:text-[#ff4500]"></i>
+                <span class="text-xs text-zinc-200 font-bold">2.8k</span>
+                <i data-lucide="arrow-big-down" class="w-4 h-4 hover:text-indigo-400"></i>
+              </div>
+              <div class="flex items-center gap-1.5 bg-[#1d2226] hover:bg-[#282f35] rounded-full px-3 py-1.5">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
+                <span>481 Comments</span>
+              </div>
+              <div class="flex items-center gap-1.5 bg-[#1d2226] hover:bg-[#282f35] rounded-full px-3 py-1.5">
+                <i data-lucide="share-2" class="w-4 h-4"></i>
+                <span>Share</span>
+              </div>
+            </div>
+          </article>
+        </main>
+
+        <aside class="w-72 ml-6 hidden lg:block space-y-4 text-xs">
+          <div class="bg-[#121619] border border-[#22272b] rounded-md p-3.5 space-y-3">
+            <h3 class="font-bold text-zinc-200">About Community</h3>
+            <p class="text-zinc-400 leading-normal">
+              Educational interface laboratory dedicated to comparative social UI layouts and interaction patterns.
+            </p>
+            <div class="border-t border-[#22272b] pt-3 flex justify-between">
+              <div>
+                <p class="font-bold text-zinc-200">142K</p>
+                <p class="text-zinc-500 text-[10px]">Members</p>
+              </div>
+              <div>
+                <p class="font-bold text-emerald-400">1.2K</p>
+                <p class="text-zinc-500 text-[10px]">Active</p>
+              </div>
+            </div>
+            <button class="w-full bg-zinc-200 hover:bg-white text-black font-bold py-1.5 rounded-full transition-colors">
+              Join Community
+            </button>
+          </div>
+        </aside>
       </div>
-      <p class="mt-2 text-xs text-zinc-500">Reddit: Headline-dominant, community-attributed, metric-driven</p>
     </div>
 
-  </div>
+  </main>
 
   <script>
-    feather.replace();
+    // Tab switching engine
+    function switchTab(platform) {
+      // Hide all platforms
+      document.querySelectorAll('.platform-view').forEach(view => {
+        view.classList.add('hidden');
+      });
+
+      // Show selected platform
+      const activeView = document.getElementById(`view-${platform}`);
+      if (activeView) activeView.classList.remove('hidden');
+
+      // Update button visual styles
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = 'tab-btn px-4 py-1.5 text-xs font-semibold rounded-full transition-all text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800';
+      });
+
+      const activeBtn = document.getElementById(`btn-${platform}`);
+      if (activeBtn) {
+        activeBtn.className = 'tab-btn px-4 py-1.5 text-xs font-semibold rounded-full transition-all bg-white text-black shadow-sm';
+      }
+    }
+
+    // Initialize Lucide icon library
+    lucide.createIcons();
   </script>
 </body>
 </html>
